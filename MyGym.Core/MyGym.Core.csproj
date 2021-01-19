@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\Response\" />
-    <Folder Include="Entity\Request\" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,7 @@ namespace MyGym.Core.Repositories
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
         Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
+        void Update(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);

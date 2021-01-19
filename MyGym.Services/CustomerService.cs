@@ -6,6 +6,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using MyGym.Core.Entity;
+using MyGym.Core.Mapper;
 
 namespace MyGym.Services
 {
@@ -17,36 +19,41 @@ namespace MyGym.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Customer>> GetAll()
+        public async Task<IEnumerable<CustomerResponse>> GetAll()
         {
-            return await _unitOfWork.Customers.GetAllAsync();
+            IEnumerable<Customer> customers = await _unitOfWork.Customers.GetAllAsync();
+            return MapperConfiguration.Mapper.Map<IEnumerable<Customer>, IEnumerable<CustomerResponse>>(customers);
         }
 
-        public async Task<Customer> GetById(Guid id)
+        public async Task<CustomerResponse> GetById(Guid id)
         {
-            return await _unitOfWork.Customers.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            Customer customer = await _unitOfWork.Customers.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            return MapperConfiguration.Mapper.Map<CustomerResponse>(customer);
         }
 
-        public async Task<Customer> Add(Customer customer)
+        public async Task<Guid> Add(SaveCustomerRequest request)
         {
+            Customer customer = MapperConfiguration.Mapper.Map<Customer>(request);
+            customer.CreatedBy = Guid.NewGuid();
+            customer.CreatedDate = DateTime.UtcNow;
             await _unitOfWork.Customers.AddAsync(customer);
             await _unitOfWork.SaveChangesAsync();
-            return customer;
+            return customer.Id;
         }
 
-        public async Task Update(Guid id, Customer customer)
+        public async Task Update(Guid id, UpdateCustomerRequest request)
         {
-            Customer dbCustomer = await GetById(id);
-            if (dbCustomer != null)
-            {
-                dbCustomer.FirstName = customer.FirstName;
-            }
+            Customer dbCustomer = await _unitOfWork.Customers.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            Customer customerToUpdate = MapperConfiguration.Mapper.Map(request, dbCustomer);
+            customerToUpdate.ModifiedBy = Guid.NewGuid();
+            customerToUpdate.ModifiedDate = DateTime.UtcNow;
+            _unitOfWork.Customers.Update(customerToUpdate);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
         {
-            Customer dbCustomer = await GetById(id);
+            Customer dbCustomer = await _unitOfWork.Customers.SingleOrDefaultAsync(x => x.Id.Equals(id));
             _unitOfWork.Customers.Remove(dbCustomer);
             await _unitOfWork.SaveChangesAsync();
         }
