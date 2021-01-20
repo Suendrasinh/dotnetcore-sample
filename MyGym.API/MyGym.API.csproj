@@ -6,10 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyGym.Core\MyGym.Core.csproj" />
+    <ProjectReference Include="..\MyGym.Infrastructure\MyGym.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyGym.Services\MyGym.Services.csproj" />
   </ItemGroup>
 
 

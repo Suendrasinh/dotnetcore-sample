@@ -1,15 +1,17 @@
 ﻿using MyGym.Core.Model;
 using MyGym.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyGym.Infrastructure.Repositories
 {
+    /// <summary>
+    ///     Customer Repository.
+    /// </summary>
     public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
     {
+        #region Constructor
         public CustomerRepository(MyGymDbContext context) : base(context)
         {
         }
+        #endregion
     }
 }
