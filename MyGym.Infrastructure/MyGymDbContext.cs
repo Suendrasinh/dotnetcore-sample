@@ -39,6 +39,10 @@ namespace MyGym.Infrastructure
                 entity.Property(e => e.Email)
                  .IsRequired()
                  .HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             });
         }
     }

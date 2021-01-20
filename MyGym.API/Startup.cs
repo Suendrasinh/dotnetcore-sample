@@ -39,7 +39,7 @@ namespace MyGym.API
         {
             services.AddControllers();
 
-            services.AddDbContext<MyGymDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("MyMusic.Data")));
+            services.AddDbContext<MyGymDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICustomerService, CustomerService>();
