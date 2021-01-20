@@ -44,10 +44,7 @@ namespace MyGym.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICustomerService, CustomerService>();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My Gym", Version = "v1" });
-            });
+            services.AddSwaggerGen();
 
             MapperConfiguration.Initialize();
         }
@@ -65,6 +62,13 @@ namespace MyGym.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Gym V1");
+            });
 
             app.UseRouting();
 

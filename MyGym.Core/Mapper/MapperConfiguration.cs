@@ -1,24 +1,32 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Model = MyGym.Core.Model;
+using MyGym.Core.Entity;
+using MyGym.Core.Model;
 
 namespace MyGym.Core.Mapper
 {
-    public class MapperConfiguration
+    /// <summary>
+    ///     Mapper Configuration
+    /// </summary>
+    public static class MapperConfiguration
     {
-        public static IMapper Mapper { get; private set; }
+        #region Variable Declaration
+        public static IMapper Mapper { get; set; }
+        #endregion
 
+        #region Public Methods
+        /// <summary>
+        ///     Initialize.
+        /// </summary>
         public static void Initialize()
         {
             var config = new AutoMapper.MapperConfiguration(mc =>
             {
-                mc.CreateMap<Entity.SaveCustomerRequest, Model.Customer>();
-                mc.CreateMap<Model.Customer, Entity.CustomerResponse>();
+                mc.CreateMap<SaveCustomerRequest, Customer>().ReverseMap();
+                mc.CreateMap<Customer, CustomerResponse>().ReverseMap();
             });
 
             Mapper = config.CreateMapper();
         }
+        #endregion
     }
 }

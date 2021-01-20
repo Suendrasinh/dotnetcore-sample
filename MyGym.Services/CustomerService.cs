@@ -4,6 +4,7 @@ using MyGym.Core.Mapper;
 using MyGym.Core.Model;
 using MyGym.Core.Services;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

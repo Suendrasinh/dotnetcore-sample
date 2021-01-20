@@ -4,6 +4,7 @@ using MyGym.Core.Entity;
 using MyGym.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MyGym.API.Controllers
@@ -39,6 +40,7 @@ namespace MyGym.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("")]
+        [ProducesResponseType(typeof(IEnumerable<CustomerResponse>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<CustomerResponse>>> GetAll()
         {
             return Ok(await _customerService.GetAll());
@@ -50,6 +52,7 @@ namespace MyGym.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CustomerResponse), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CustomerResponse>> GetById(Guid id)
         {
             return Ok(await _customerService.GetById(id));
@@ -61,7 +64,8 @@ namespace MyGym.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("")]
-        public async Task<ActionResult<CustomerResponse>> Save([FromBody] SaveCustomerRequest request)
+        [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
+        public async Task<ActionResult<Guid>> Save([FromBody] SaveCustomerRequest request)
         {
             var validator = new SaveCustomerValidator();
             var validationResult = await validator.ValidateAsync(request);
@@ -79,6 +83,7 @@ namespace MyGym.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCustomerRequest request)
         {
             var validator = new UpdateCustomerValidator();
@@ -90,12 +95,13 @@ namespace MyGym.API.Controllers
             return Ok(_customerService.Update(id,request));
         }
 
-        /// <summary>
-        ///     Delete.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+       /// <summary>
+       ///      Delete.
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty)
